@@ -23,6 +23,10 @@ public class FacultyService {
         return facultyRepository.findById(id).orElseThrow();
     }
 
+    public Collection<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String name, String color) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+
     public Collection<Faculty> findByColor(String color) {
         return facultyRepository.findByColor(color);
     }

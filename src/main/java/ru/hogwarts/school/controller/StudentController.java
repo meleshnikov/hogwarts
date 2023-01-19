@@ -29,12 +29,18 @@ public class StudentController {
         return ResponseEntity.ok(studentService.find(id));
     }
 
-    @GetMapping()
-    public ResponseEntity<Collection<Student>> findByAge(@RequestParam int age) {
+    @GetMapping("/age/{age}")
+    public ResponseEntity<Collection<Student>> findByAge(@PathVariable int age) {
         return ResponseEntity.ok(studentService.findByAge(age));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/age")
+    public ResponseEntity<Collection<Student>> findByAgeBetween(@RequestParam int min,
+                                                                @RequestParam int max) {
+        return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+    }
+
+    @GetMapping()
     public ResponseEntity<Collection<Student>> getAll() {
         return ResponseEntity.ok(studentService.getAll());
     }
