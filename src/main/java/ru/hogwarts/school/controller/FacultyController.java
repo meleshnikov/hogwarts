@@ -43,8 +43,8 @@ public class FacultyController {
     }
 
     @GetMapping("/by/student")
-    public ResponseEntity<Faculty> findFacultyByStudentId(@RequestParam Long id) {
-        Faculty faculty = facultyService.findFacultyByStudentId(id);
+    public ResponseEntity<Faculty> findFacultyByStudentsId(@RequestParam long id) {
+        Faculty faculty = facultyService.findFacultyByStudentsId(id);
         return faculty != null ?
                 ResponseEntity.ok(faculty) :
                 ResponseEntity.notFound().build();

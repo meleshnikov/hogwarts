@@ -23,8 +23,8 @@ public class FacultyService {
         return facultyRepository.findById(id).orElseThrow();
     }
 
-    public Faculty findFacultyByStudentId(Long id) {
-        return facultyRepository.findFacultyByStudentId(id);
+    public Faculty findFacultyByStudentsId(long id) {
+        return facultyRepository.findFacultyByStudentsId(id);
     }
 
     public Collection<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String name, String color) {
