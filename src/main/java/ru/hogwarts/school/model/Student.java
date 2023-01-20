@@ -1,7 +1,6 @@
 package ru.hogwarts.school.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +15,9 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+
+    public Student() {
+    }
 
     public Long getId() {
         return id;

@@ -16,6 +16,9 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty")
     private Collection<Student> students;
 
+    public Faculty() {
+    }
+
     public Long getId() {
         return id;
     }
