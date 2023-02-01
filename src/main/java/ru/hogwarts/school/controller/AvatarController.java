@@ -11,6 +11,7 @@ import ru.hogwarts.school.service.AvatarService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("avatar")
@@ -42,6 +43,13 @@ public class AvatarController {
     public void download(@PathVariable long id,
                          HttpServletResponse response) throws IOException {
         avatarService.download(id, response);
+    }
+
+    @GetMapping
+    public ResponseEntity<Collection<Avatar>> getAvatars(@RequestParam Integer page,
+                                                         @RequestParam Integer size) {
+        Collection<Avatar> avatars = avatarService.getAvatars(page, size);
+        return ResponseEntity.ok(avatars);
     }
 
 }

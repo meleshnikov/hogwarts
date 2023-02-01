@@ -17,3 +17,7 @@ WHERE age < student.id;
 SELECT *
 FROM student
 ORDER BY age;
+
+SELECT *
+FROM student
+ORDER BY id DESC LIMIT 3
