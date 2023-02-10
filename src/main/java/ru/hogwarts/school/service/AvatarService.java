@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -28,28 +30,34 @@ public class AvatarService {
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     public AvatarService(StudentService studentService, AvatarRepository avatarRepository) {
         this.studentService = studentService;
         this.avatarRepository = avatarRepository;
     }
 
     public void upload(long id, MultipartFile file) throws IOException {
+        logger.info("Uploading avatar for student with id = {}", id);
         Student student = studentService.find(id);
         Path path = Path.of(dir,
                 student.getId().toString() + "."
                         + FilenameUtils.getExtension(file.getOriginalFilename()));
-
         Files.createDirectories(path.getParent());
+        logger.debug("avatar's path: {}", path);
         Files.deleteIfExists(path);
 
+        logger.debug("Opening file");
         try (InputStream is = file.getInputStream();
              OutputStream os = Files.newOutputStream(path, CREATE_NEW);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
         ) {
+            logger.debug("Writing file to: {}", path);
             bis.transferTo(bos);
         }
 
+        logger.debug("Adding file to db");
         Avatar avatar = find(id);
         avatar.setStudent(student);
         avatar.setPath(path.toString());
@@ -60,11 +68,13 @@ public class AvatarService {
     }
 
     public Avatar find(long id) {
+        logger.info("Finding avatar by student's id = {}", id);
         return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
 
     public void download(long id, HttpServletResponse response) throws IOException {
+        logger.info("Downloading file for student with id = {}", id);
         Avatar avatar = find(id);
         Path path = Path.of(avatar.getPath());
 
@@ -80,6 +90,7 @@ public class AvatarService {
     }
 
     public Collection<Avatar> getAvatars(Integer page, Integer size) {
+        logger.info("Was invoked method to get avatars in page = {}, with page size = {}", page, size);
         PageRequest pageRequest = PageRequest.of(page - 1, size);
         return avatarRepository.findAll(pageRequest).getContent();
     }
