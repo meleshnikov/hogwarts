@@ -41,8 +41,13 @@ public class StudentController {
     }
 
     @GetMapping("/age/average")
-    public ResponseEntity<Integer> getAverageAge() {
+    public ResponseEntity<Double> getAverageAge() {
         return ResponseEntity.ok(studentService.getAverageAge());
+    }
+
+    @GetMapping("/age/average2")
+    public ResponseEntity<Double> getAverageAgeByStream() {
+        return ResponseEntity.ok(studentService.getAverageAgeByStream());
     }
 
     @GetMapping()
@@ -80,6 +85,11 @@ public class StudentController {
     @GetMapping("/count")
     public ResponseEntity<Long> getStudentsCount() {
         return ResponseEntity.ok(studentService.getStudentsCount());
+    }
+
+    @GetMapping("/name/starts-with/A")
+    public ResponseEntity<Collection<String>> getNamesByFirstLetterA() {
+        return ResponseEntity.ok(studentService.getNamesInUpperCaseSortedStartingWith("А"));
     }
 
 }

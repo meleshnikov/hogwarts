@@ -18,4 +18,19 @@ public class InfoController {
         return infoService.getPort();
     }
 
+    @GetMapping("/foo1")
+    public int foo1() {
+        return infoService.foo1();
+    }
+
+    @GetMapping("/foo2")
+    public int foo2() {
+        return infoService.foo2();
+    }
+
+    @GetMapping("/foo3")
+    public int foo3() {
+        return infoService.foo3();
+    }
+
 }
