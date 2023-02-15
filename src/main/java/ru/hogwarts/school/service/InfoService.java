@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 @Service
@@ -15,37 +16,47 @@ public class InfoService {
     @Value("${server.port}")
     private int port;
 
+    private static final int n = 1_000_000;
+
     public int getPort() {
         return port;
     }
 
-    public int foo1() {
+    public long foo1() {
         long t = System.currentTimeMillis();
-        int result = Stream.iterate(1, a -> a + 1)
-                .limit(1_000_000)
-                .reduce(0, (a, b) -> a + b);
+        long result = Stream.iterate(1L, a -> a + 1)
+                .limit(n)
+                .reduce(0L, (a, b) -> a + b);
         logger.info("foo1: {}мс", System.currentTimeMillis() - t);
         return result;
     }
 
-    public int foo2() {
+    public long foo2() {
         long t = System.currentTimeMillis();
-        int result = Stream.iterate(1, a -> a + 1)
-                .limit(1_000_000)
+        long result = Stream.iterate(1L, a -> a + 1)
+                .limit(n)
                 .parallel()
-                .reduce(0, (a, b) -> a + b);
+                .reduce(0L, (a, b) -> a + b);
         logger.info("foo2: {}мс", System.currentTimeMillis() - t);
         return result;
     }
 
-    public int foo3() {
+    public long foo3() {
         long t = System.currentTimeMillis();
-        int result = Stream.iterate(1, a -> a + 1)
-                .limit(1_000_000)
-                .mapToInt(Integer::intValue)
-                .sum();
+        long result = LongStream.range(1, n + 1).sum();
         logger.info("foo3: {}мс", System.currentTimeMillis() - t);
         return result;
+    }
+
+    public long foo4() {
+        long t = System.currentTimeMillis();
+        long result = arithmeticProgressionSum(1, n, n);
+        logger.info("foo4: {}мс", System.currentTimeMillis() - t);
+        return result;
+    }
+
+    private long arithmeticProgressionSum(int from, int to, int n) {
+        return (long) (from + to) * n / 2;
     }
 
 }
