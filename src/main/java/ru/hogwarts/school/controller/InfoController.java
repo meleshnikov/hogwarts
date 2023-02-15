@@ -19,18 +19,23 @@ public class InfoController {
     }
 
     @GetMapping("/foo1")
-    public int foo1() {
+    public long foo1() {
         return infoService.foo1();
     }
 
     @GetMapping("/foo2")
-    public int foo2() {
+    public long foo2() {
         return infoService.foo2();
     }
 
     @GetMapping("/foo3")
-    public int foo3() {
+    public long foo3() {
         return infoService.foo3();
+    }
+
+    @GetMapping("/foo4")
+    public long foo4() {
+        return infoService.foo4();
     }
 
 }
