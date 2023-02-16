@@ -92,4 +92,14 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getNamesInUpperCaseSortedStartingWith("А"));
     }
 
+    @GetMapping("/names/print")
+    public void printNames() {
+        studentService.printNames();
+    }
+
+    @GetMapping("/names/print-synchronized")
+    public void printNamesSynchronized() {
+        studentService.printNamesSynchronized();
+    }
+
 }

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,6 +97,53 @@ public class StudentService {
                 .filter(n -> n.startsWith(l))
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public void printNames() {
+        List<Student> students = new ArrayList<>(getAll());
+        logger.info("Printing names...");
+        Thread thread1 = new Thread(() -> {
+            print(students, 2);
+            print(students, 3);
+        });
+        Thread thread2 = new Thread(() -> {
+            print(students, 4);
+            print(students, 5);
+        });
+        thread1.start();
+        thread2.start();
+        print(students, 0);
+        print(students, 1);
+    }
+
+    private final Object lock = new Object();
+
+    public void printNamesSynchronized() {
+        List<Student> students = new ArrayList<>(getAll());
+        logger.info("Printing names synchronously...");
+        Thread thread1 = new Thread(() -> {
+            print(students, 2, lock);
+            print(students, 3, lock);
+        });
+        Thread thread2 = new Thread(() -> {
+            print(students, 4, lock);
+            print(students, 5, lock);
+        });
+        print(students, 0, lock);
+        print(students, 1, lock);
+        thread1.start();
+        thread2.start();
+    }
+
+    private void print(List<Student> students, int index) {
+        logger.debug("{}: ", Thread.currentThread().getName());
+        System.out.println(students.get(index).getName());
+    }
+
+    private void print(List<Student> students, int index, Object lock) {
+        synchronized (lock) {
+            print(students, index);
+        }
     }
 
 }
